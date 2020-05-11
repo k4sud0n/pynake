@@ -79,8 +79,9 @@ class Map:
         self.lock.release()
 
         self.lock.acquire()
-        if self.food.x != -1 and self.food.y != -1:
-            qp.setBrush(QColor(255, 0, 0))
+        if not self.food.x == -1 and not self.food.y == -1:
+            red_color = QColor(255, 0, 0)
+            qp.setBrush(red_color)
             qp.drawRect(self.rect[self.food.y][self.food.x])
         self.lock.release()
 
@@ -92,13 +93,19 @@ class Map:
             qp.drawText(self.in_rectangle, Qt.AlignCenter, 'Press arrow key to start the game')
 
     def keypress(self, key):
-        if (key == Qt.Key_Right or key == Qt.Key_Up or key == Qt.Key_Down) and not self.game_status:
-            self.game_status = True
-            self.snake.change_direction(key)
-            self.thread.start()
+        left_key = Qt.Key_Left
+        right_key = Qt.Key_Right
+        up_key = Qt.Key_Up
+        down_key = Qt.Key_Down
 
-        if (key == Qt.Key_Left or key == Qt.Key_Right or key == Qt.Key_Up or key == Qt.Key_Down) and self.game_status:
-            if self.keyboard_twice:
+        if key == left_key or key == right_key or key == up_key or key == down_key:
+            if not self.game_status:
+                self.game_status = True
+                self.snake.change_direction(key)
+                self.thread.start()
+
+        if key == left_key or key == right_key or key == up_key or key == down_key:
+            if self.game_status and self.keyboard_twice:
                 self.snake.change_direction(key)
                 self.keyboard_twice = False
 
@@ -128,8 +135,8 @@ class Map:
 
             count += 1
 
-    def ate_food(self, node):
-        if self.food == node:
+    def ate_food(self, space):
+        if self.food == space:
             return True
         else:
             return False
@@ -137,7 +144,10 @@ class Map:
     def check_if_out(self, head):
         if head.x < 0 or head.x >= self.lines:
             return True
-        elif head.y < 0 or head.y >= self.lines:
+        else:
+            return False
+
+        if head.y < 0 or head.y >= self.lines:
             return True
         else:
             return False
@@ -159,9 +169,9 @@ class Map:
 
             if eat:
                 self.snake.node_add()
-                self.food_count += 1
                 self.food.x = -1
                 self.food.y = -1
+                self.food_count += 1
 
             self.lock.release()
 
