@@ -30,18 +30,6 @@ class Snake:
     def change_direction(self, key):
         self.direction = key
 
-    def changing_direction(self, key):
-        if self.direction == Qt.Key_Left and key == Qt.Key_Right:
-            return False
-        elif self.direction == Qt.Key_Right and key == Qt.Key_Left:
-            return False
-        elif self.direction == Qt.Key_Up and key == Qt.Key_Down:
-            return False
-        elif self.direction == Qt.Key_Down and key == Qt.Key_Up:
-            return False
-        else:
-            return True
-
     def crashed(self):
         if self.node_count():
             return False
