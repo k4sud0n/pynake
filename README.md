@@ -17,7 +17,7 @@ python3
 
 1. Clone this repository
     ```bash
-    $ git clone https://github.com/legitcode267/pynake
+    $ git clone https://github.com/k4sud0n/pynake
     ```
 ### Run the app
 
